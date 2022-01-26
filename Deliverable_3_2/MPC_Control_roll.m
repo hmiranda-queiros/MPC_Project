@@ -94,6 +94,7 @@ classdef MPC_Control_roll < MPC_Control
             
             %Cost matrices
             Qs = 100;
+            Rs = 1;
             
             Ts = 1/20; % Sample time
             rocket = Rocket(Ts);
@@ -110,7 +111,8 @@ classdef MPC_Control_roll < MPC_Control
             con = [];
             
             con = con + (xs == mpc.A*xs + mpc.B*us) + (M*us <= m);
-            obj = obj + (xs(2) - (ref - xs_l(2)))'*Qs*(xs(2) - (ref - xs_l(2)));
+            obj = obj + (mpc.C*(xs + xs_l) - ref)'*Qs*(mpc.C*(xs + xs_l) - ref);
+            obj = obj + (us + us_l)'*Rs*(us + us_l);
             
             % YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

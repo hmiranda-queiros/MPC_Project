@@ -96,7 +96,8 @@ classdef MPC_Control_y < MPC_Control
             % You can use the matrices mpc.A, mpc.B, mpc.C and mpc.D
             
             %Cost matrices
-            Qs = 100;     
+            Qs = 100;
+            Rs = 1;
             
             Ts = 1/20; % Sample time
             rocket = Rocket(Ts);
@@ -115,7 +116,8 @@ classdef MPC_Control_y < MPC_Control
             con = [];
             
             con = con + (xs == mpc.A*xs + mpc.B*us) + (M*us <= m) + (F*xs <= f);
-            obj = obj + (xs(4) - (ref - xs_l(4)))'*Qs*(xs(4) - (ref - xs_l(4)));
+            obj = obj + (mpc.C*(xs + xs_l) - ref)'*Qs*(mpc.C*(xs + xs_l) - ref);
+            obj = obj + (us + us_l)'*Rs*(us + us_l);
             
             % YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
