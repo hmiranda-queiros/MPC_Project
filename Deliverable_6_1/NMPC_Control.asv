@@ -66,8 +66,8 @@ obj = obj + (U_ref)'*Rs*(U_ref);
 %Q = diag([1e-1, 1e-1, 1e-1, 1e-1, 1e-1, 1e-5, 1e-5, 1e-5, 1e-5, 1e-5, 1e-5, 1000]);
 %Q = diag([1000, 1000, 1, 1, 1, 1000, 1, 1, 1, 100, 100, 100]);
 %R = diag([1e-5, 1e-5, 1e-5, 1e-5]);
-Q = diag([1, 1, 1, 1e-2, 1e-2, 10, 1e-2, 1e-2, 1e-2, 1, 1, 1000]);
-R = diag([1e-1, 1e-1, 1e-2, 1e-1]);
+Q = diag([10, 10, 10, 1e-2, 1e-2, 10, 1e-2, 1e-2, 1e-2, 1000, 1000, 1000]);
+R = diag([1e-2, 1e-2, 1e-2, 1e-2]);
 
 %Constraints and Objective for tracking
 opti.subject_to(X_sym(:,2) == f_discrete(X_sym(:,1), U_sym(:,1)));
