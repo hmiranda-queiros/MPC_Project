@@ -50,7 +50,7 @@ F = [0 0 0 0 1 0 0 0 0 0 0 0; ...
 f = [deg2rad(85); deg2rad(85)] ;
 
 %Cost matrices for steady state
-%Qs = diag([100, 100, 100, 100]);
+Qs = diag([1000, 1000, 1000, 1000]);
 Rs = diag([1, 1, 1, 1]);
 
 obj = 0;
@@ -59,7 +59,7 @@ obj = 0;
 opti.subject_to(X_ref == f_discrete(X_ref, U_ref));
 opti.subject_to(F*X_ref <= f);
 opti.subject_to(M*U_ref <= m);
-opti.subject_to(X_ref([6 10 11 12]) == ref_sym);
+obj = obj + (X_ref([6 10 11 12]) - ref_sym)'*Qs*(X_ref([6 10 11 12]) - ref_sym);
 obj = obj + (U_ref)'*Rs*(U_ref);
 
 %Cost matrices for tracking
