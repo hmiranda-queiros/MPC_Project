@@ -91,8 +91,8 @@ classdef MPC_Control_roll < MPC_Control
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             % YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE
             % You can use the matrices mpc.A, mpc.B, mpc.C and mpc.D
-            Qs = diag([1, 100]);     %nx = 4
-            Rs = 1;                  %nu = 1
+            %Cost matrices
+            Qs = 100;
             
             Ts = 1/20; % Sample time
             rocket = Rocket(Ts);
@@ -109,7 +109,7 @@ classdef MPC_Control_roll < MPC_Control
             con = [];
             
             con = con + (xs == mpc.A*xs + mpc.B*us) + (M*us <= m);
-            obj = obj + (xs - ([0; ref]-xs_l))'*Qs*(xs - ([0; ref]-xs_l)) + (us - (0-us_l))'*Rs*(us - (0-us_l));
+            obj = obj + (xs(2) - (ref - xs_l(2)))'*Qs*(xs(2) - (ref - xs_l(2)));
             
             % YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

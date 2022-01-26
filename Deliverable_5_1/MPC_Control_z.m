@@ -48,7 +48,7 @@ classdef MPC_Control_z < MPC_Control
             % SET THE PROBLEM CONSTRAINTS con AND THE OBJECTIVE obj HERE
             %Cost matrices
             Q = diag([1, 1000]);     %nx = 2
-            R = 1;                %nu = 1
+            R = 1;                  %nu = 1
             
             Ts = 1/20; % Sample time
             rocket = Rocket(Ts);
@@ -112,8 +112,7 @@ classdef MPC_Control_z < MPC_Control
             % YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE
             % You can use the matrices mpc.A, mpc.B, mpc.C and mpc.D
             %Cost matrices
-            Qs = diag([1, 100]);     %nx = 4
-            Rs = 1;                  %nu = 1
+            Qs = 100;
             
             Ts = 1/20; % Sample time
             rocket = Rocket(Ts);
@@ -130,7 +129,7 @@ classdef MPC_Control_z < MPC_Control
             con = [];
             
             con = con + (xs == mpc.A*xs + mpc.B*us + mpc.B*d_est) + (M*us <= m);
-            obj = obj + (xs - ([0; ref]-xs_l))'*Qs*(xs - ([0; ref]-xs_l)) + (us - (0-us_l))'*Rs*(us - (0-us_l));
+            obj = obj + (xs(2) - (ref - xs_l(2)))'*Qs*(xs(2) - (ref - xs_l(2)));
             
             % YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -156,7 +155,7 @@ classdef MPC_Control_z < MPC_Control
             B_bar = [mpc.B; 0];
             C_bar = [mpc.C, 0];
             
-%             Q = diag([1000,1,100]);
+%             Q = diag([1000,1,10]);
 %             R = 1;
 %             
 %             [L_transp,~,~] = dlqr(A_bar',C_bar',Q,R);
