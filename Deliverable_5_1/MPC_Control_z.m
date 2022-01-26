@@ -47,7 +47,7 @@ classdef MPC_Control_z < MPC_Control
             
             % SET THE PROBLEM CONSTRAINTS con AND THE OBJECTIVE obj HERE
             %Cost matrices
-            Q = diag([1, 1000]);     %nx = 2
+            Q = diag([1, 100]);     %nx = 2
             R = 1;                  %nu = 1
             
             Ts = 1/20; % Sample time
@@ -66,7 +66,7 @@ classdef MPC_Control_z < MPC_Control
             con = [];
             
             con = con + (X(:,2) == mpc.A*X(:,1) + mpc.B*U(:,1) + mpc.B*d_est) + (M*U(:,1) <= m);
-            obj = obj + U(:,1)'*R*U(:,1); 
+            obj = obj + (U(:,1) - u_ref)'*R*(U(:,1) - u_ref); 
             
             for i = 2:N-1
                 con = con + (X(:,i+1) == mpc.A*X(:,i) + mpc.B*U(:,i) + mpc.B*d_est);
