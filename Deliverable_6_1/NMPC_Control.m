@@ -51,7 +51,7 @@ F = [0 0 0 0 1 0 0 0 0 0 0 0; ...
 f = [deg2rad(85); deg2rad(85)] ;
 
 %Cost matrices for steady state
-Qs = diag([1, 1, 1, 1]);
+Qs = diag([100, 100, 100, 100]);
 Rs = diag([1, 1, 1, 1]);
 
 obj = 0;
@@ -64,8 +64,8 @@ obj = obj + (X_ref([6 10 11 12]) - ref_sym)'*Qs*(X_ref([6 10 11 12]) - ref_sym);
 obj = obj + (U_ref)'*Rs*(U_ref);
 
 %Cost matrices for tracking
-%Q = diag([100, 100, 1, 1, 1, 100, 1, 1, 1, 100, 100, 100]);
-Q = diag([1000, 1000, 1, 1, 1, 1000, 1, 1, 1, 100, 100, 100]);
+Q = diag([1, 1, 1, 1, 1, 1000, 1, 1, 1, 100, 100, 1000]);
+%Q = diag([1000, 1000, 1, 1, 1, 1000, 1, 1, 1, 100, 100, 100]);
 R = diag([1, 1, 1, 1]);
 
 %Constraints and Objective for tracking
