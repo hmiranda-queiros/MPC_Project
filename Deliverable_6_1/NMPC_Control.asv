@@ -18,40 +18,40 @@ ref_sym = opti.parameter(4, 1);   % target position
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE
 
-% Decision varaibles for steady state (symbolic)
+% Parameters for steady state (symbolic)
 X_ref = opti.variable(nx, 1); % state trajectory
 U_ref = opti.variable(nu, 1);   % control trajectory)
 
 %f_discrete = @(X,U) ode45(@(t,x) rocket.f(x,U),[0 rocket.Ts], X');
-f_discrete = @(x,u) RK4(x, u, rocket);
+f_discrete = @(x,u) RK4(x, u, rocket.Ts, rocket.f);
 
 % Constraint Matrices
 % u in U = { u | Mu <= m }
-M = [1 0 0 0; ...
-    -1 0 0 0;
-    0 1 0 0;
-    0 -1 0 0;
-    0 0 1 0;
-    0 0 -1 0;
-    0 0 0 1;
-    0 0 0 -1];
+M = [1 0 0 0;
+    -1 0 0 0; 
+    0 1 0 0; 
+ 0-1 0 0; 
+     0 0 1 0; 
+     0 0-1 0; 
+     0 0 0 1; 
+     0 0 0-1];
 m = [0.26; ...
-     0.26; 
-     0.26; 
-     0.26; 
-      80; 
-     -50; 
-      20; 
+     0.26; ...
+     0.26; ...
+     0.26; ...
+      80; ...
+     -50; ...
+      20; ...
       20];
 
 % x in X = { x | Fx <= f }
-F = [0 0 0 0 1 0 0 0 0 0 0 0; ...
-     0 0 0 0 -1 0 0 0 0 0 0 0;
+F = [0 0 0 0 1 0 0 0 0 0 0 0;
+     0 0 0 0-1 0 0 0 0 0 0 0;
     ]; 
 f = [deg2rad(85); deg2rad(85)] ;
 
 %Cost matrices for steady state
-Qs = diag([1, 1, 1, 1]);
+Qs = diag([100, 100, 100, 100]);
 Rs = diag([1, 1, 1, 1]);
 
 obj = 0;
@@ -60,12 +60,11 @@ obj = 0;
 opti.subject_to(X_ref == f_discrete(X_ref, U_ref));
 opti.subject_to(F*X_ref <= f);
 opti.subject_to(M*U_ref <= m);
-obj = obj + (X_ref([6 10 11 12]) - ref_sym)'*Qs*(X_ref([6 10 11 12]) - ref_sym);
+obj = obj + (X_ref([0 0 0 0 0 1 0 0 0 1 1 1]) - ref_sym)'*Qs*(X_ref([0 0 0 0 0 1 0 0 0 1 1 1]) - ref_sym);
 obj = obj + (U_ref)'*Rs*(U_ref);
 
 %Cost matrices for tracking
-%Q = diag([100, 100, 1, 1, 1, 100, 1, 1, 1, 100, 100, 100]);
-Q = diag([1000, 1000, 1, 1, 1, 1000, 1, 1, 1, 100, 100, 100]);
+Q = diag([100, 100, 1, 1, 1, 100, 1, 1, 1, 100, 100, 100]);
 R = diag([1, 1, 1, 1]);
 
 %Constraints and Objective for tracking
