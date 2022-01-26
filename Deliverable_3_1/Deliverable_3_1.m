@@ -11,7 +11,7 @@ sys = rocket.linearize(xs, us);
 %% MPC_Control_x
 
 % Design MPC controller
-H = 2; % Horizon length in seconds
+H = 5; % Horizon length in seconds
 mpc_x = MPC_Control_x(sys_x, Ts, H);
 
 % Get control input
@@ -26,7 +26,7 @@ ph = rocket.plotvis_sub(T, X_sub, U_sub, sys_x, xs, us);
 %% MPC_Control_y
 
 % Design MPC controller
-H = 2; % Horizon length in seconds
+H = 5; % Horizon length in seconds
 mpc_y = MPC_Control_y(sys_y, Ts, H);
 
 % Get control input
@@ -41,7 +41,7 @@ ph = rocket.plotvis_sub(T, X_sub, U_sub, sys_y, xs, us);
 %% MPC_Control_z
 
 % Design MPC controller
-H = 2; % Horizon length in seconds
+H = 5; % Horizon length in seconds
 mpc_z = MPC_Control_z(sys_z, Ts, H);
 
 % Get control input
@@ -56,7 +56,7 @@ ph = rocket.plotvis_sub(T, X_sub, U_sub, sys_z, xs, us);
 %% MPC_Control_roll
 
 % Design MPC controller
-H = 2; % Horizon length in seconds
+H = 5; % Horizon length in seconds
 mpc_roll = MPC_Control_roll(sys_roll, Ts, H);
 
 % Get control input
