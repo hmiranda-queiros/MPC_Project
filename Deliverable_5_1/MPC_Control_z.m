@@ -111,8 +111,8 @@ classdef MPC_Control_z < MPC_Control
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             % YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE
             % You can use the matrices mpc.A, mpc.B, mpc.C and mpc.D
-            %Cost matrices
-            Qs = 100;
+            
+            %Cost matrix
             Rs = 1;
             
             Ts = 1/20; % Sample time
@@ -130,7 +130,7 @@ classdef MPC_Control_z < MPC_Control
             con = [];
             
             con = con + (xs == mpc.A*xs + mpc.B*us + mpc.B*d_est) + (M*us <= m);
-            obj = obj + (mpc.C*(xs + xs_l) - ref)'*Qs*(mpc.C*(xs + xs_l) - ref);
+            con = con + (mpc.C*(xs + xs_l) == ref);
             obj = obj + (us + us_l)'*Rs*(us + us_l);
             
             % YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE
@@ -156,13 +156,6 @@ classdef MPC_Control_z < MPC_Control
             A_bar = [mpc.A, mpc.B; zeros(1, 2), 1];
             B_bar = [mpc.B; 0];
             C_bar = [mpc.C, 0];
-            
-%             Q = diag([1000,1,10]);
-%             R = 1;
-%             
-%             [L_transp,~,~] = dlqr(A_bar',C_bar',Q,R);
-%             
-%             L = -L_transp.';
             
             L = -place(A_bar',C_bar',[0.1,0.3,0.2])';
             

@@ -49,8 +49,7 @@ F = [0 0 0 0 1 0 0 0 0 0 0 0; ...
     ]; 
 f = [deg2rad(85); deg2rad(85)] ;
 
-%Cost matrices for steady state
-Qs = diag([1000, 1000, 1000, 1000]);
+%Cost matrix for steady state
 Rs = diag([1, 1, 1, 1]);
 
 obj = 0;
@@ -59,15 +58,12 @@ obj = 0;
 opti.subject_to(X_ref == f_discrete(X_ref, U_ref));
 opti.subject_to(F*X_ref <= f);
 opti.subject_to(M*U_ref <= m);
-obj = obj + (X_ref([6 10 11 12]) - ref_sym)'*Qs*(X_ref([6 10 11 12]) - ref_sym);
+opti.subject_to(X_ref([10 11 12 6]) == ref_sym);
 obj = obj + (U_ref)'*Rs*(U_ref);
 
 %Cost matrices for tracking
-%Q = diag([1e-1, 1e-1, 1e-1, 1e-1, 1e-1, 1e-5, 1e-5, 1e-5, 1e-5, 1e-5, 1e-5, 1000]);
-%Q = diag([1000, 1000, 1, 1, 1, 1000, 1, 1, 1, 100, 100, 100]);
-%R = diag([1e-5, 1e-5, 1e-5, 1e-5]);
-Q = diag([1, 1, 1, 1e-2, 1e-2, 10, 1e-2, 1e-2, 1e-2, 1, 1, 1000]);
-R = diag([1e-1, 1e-1, 1e-2, 1e-1]);
+Q = diag([100, 100, 100, 1, 100, 200, 1, 1, 1, 200, 200, 200]);
+R = diag([1, 1, 1, 1]);
 
 %Constraints and Objective for tracking
 opti.subject_to(X_sym(:,2) == f_discrete(X_sym(:,1), U_sym(:,1)));

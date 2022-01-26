@@ -91,8 +91,8 @@ classdef MPC_Control_roll < MPC_Control
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             % YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE
             % You can use the matrices mpc.A, mpc.B, mpc.C and mpc.D
-            %Cost matrices
-            Qs = 100;
+            
+            %Cost matrix
             Rs = 1;
             
             Ts = 1/20; % Sample time
@@ -110,7 +110,7 @@ classdef MPC_Control_roll < MPC_Control
             con = [];
             
             con = con + (xs == mpc.A*xs + mpc.B*us) + (M*us <= m);
-            obj = obj + (mpc.C*(xs + xs_l) - ref)'*Qs*(mpc.C*(xs + xs_l) - ref);
+            con = con + (mpc.C*(xs + xs_l) == ref);
             obj = obj + (us + us_l)'*Rs*(us + us_l);
             
             % YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE
