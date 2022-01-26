@@ -9,7 +9,7 @@ H = 4;
 nmpc = NMPC_Control(rocket, H);
 
 % MPC reference with default maximum roll = 15 deg
-Tf = 4;
+Tf = 2;
 ref = @(t_, x_) rocket.MPC_ref(t_, Tf);
 
 % MPC reference with specified maximum roll = 50 deg
