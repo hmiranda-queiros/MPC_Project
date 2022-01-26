@@ -51,7 +51,7 @@ f = [deg2rad(85); deg2rad(85)] ;
 
 %Cost matrices for steady state
 %Qs = diag([100, 100, 100, 100]);
-Rs = diag([1, 1, 1, 1]);
+Rs = diag([1e-7 1e-7, 1e-7, 1e-7]);
 
 obj = 0;
 
@@ -63,9 +63,11 @@ opti.subject_to(X_ref([6 10 11 12]) == ref_sym);
 obj = obj + (U_ref)'*Rs*(U_ref);
 
 %Cost matrices for tracking
-Q = diag([0.001, 0.001, 0.001, 100, 100, 100, 0.001, 0.001, 0.001, 100, 100, 100]);
+%Q = diag([1e-1, 1e-1, 1e-1, 1e-1, 1e-1, 1e-5, 1e-5, 1e-5, 1e-5, 1e-5, 1e-5, 1000]);
 %Q = diag([1000, 1000, 1, 1, 1, 1000, 1, 1, 1, 100, 100, 100]);
-R = diag([0.0001, 0.0001, 0.0001, 0.0001]);
+%R = diag([1e-5, 1e-5, 1e-5, 1e-5]);
+Q = diag([1e-2, 1e-2, 1e-2, 1e-2, 1e-2, 1000, 1e-2, 1e-2, 1e-2, 1000, 1000, 1000]);
+R = diag([1e-2, 1e-2, 1e-2, 1e-2]);
 
 %Constraints and Objective for tracking
 opti.subject_to(X_sym(:,2) == f_discrete(X_sym(:,1), U_sym(:,1)));
@@ -83,14 +85,14 @@ end
 opti.subject_to(X_sym(:,1) == x0_sym);
 
 % Compute LQR controller for unconstrained system
-[xs, us] = rocket.trim();
-sys = rocket.linearize(xs, us);
-sys_d = c2d(sys, rocket.Ts);
-[A, B, ~, ~] = ssdata(sys_d);
-[~,Qf,~] = dlqr(A,B,Q,R);
-
-% Terminal Cost
-obj = obj + (X_sym(:,N) - X_ref)'*Qf*(X_sym(:,N) - X_ref);
+% [xs, us] = rocket.trim();
+% sys = rocket.linearize(xs, us);
+% sys_d = c2d(sys, rocket.Ts);
+% [A, B, ~, ~] = ssdata(sys_d);
+% [~,Qf,~] = dlqr(A,B,Q,R);
+% 
+% % Terminal Cost
+% obj = obj + (X_sym(:,N) - X_ref)'*Qf*(X_sym(:,N) - X_ref);
 
 % Objective
 opti.minimize(obj);
