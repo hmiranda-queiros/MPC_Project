@@ -1,4 +1,7 @@
 classdef MPC_Control_y < MPC_Control
+    properties
+        flag = 0
+    end
     
     methods
         % Design a YALMIP optimizer object that takes a steady-state state
@@ -44,7 +47,7 @@ classdef MPC_Control_y < MPC_Control
             % u in U = { u | Mu <= m }
             M = [1;-1]; m = [0.26; 0.26] - M*us(1);
             % x in X = { x | Fx <= f }
-            F = [0 1 0 0; 0 -1 0 0]; f = [0.0873; 0.0873] - F*xs([1 0 0 1 0 0 0 1 0 0 1 0] == 1);
+            F = [0 1 0 0; 0 -1 0 0]; f = [0.0873; 0.0873] - F*xs([1 4 8 11]);
 
             % Compute LQR controller for unconstrained system
             [K,Qf,~] = dlqr(mpc.A,mpc.B,Q,R);
@@ -64,6 +67,17 @@ classdef MPC_Control_y < MPC_Control
                 end
             end
             [Ff,ff] = double(Xf);
+            
+            if mpc.flag == 0 
+                % Plot Xf
+                figure;
+                for i = 1:1:3
+                    subplot(1, 3, i);
+                    Xf.projection(i: i+1).plot();
+                    title("y controller : Xf for dimension " + num2str(i) + ", " + num2str(i + 1))
+                end
+                mpc.flag = 1;
+            end
             
             %Objective and constraints YALMIP
             obj = 0;

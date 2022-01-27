@@ -119,7 +119,7 @@ classdef MPC_Control_z < MPC_Control
             rocket = Rocket(Ts);
             [xs_l, us_l] = rocket.trim();
             
-            xs_l = xs_l([0 0 0 0 0 0 0 0 1 0 0 1] == 1);
+            xs_l = xs_l([9 12]);
             us_l = us_l(3);
             
             % Constraints
@@ -157,7 +157,15 @@ classdef MPC_Control_z < MPC_Control
             B_bar = [mpc.B; 0];
             C_bar = [mpc.C, 0];
             
-            L = -place(A_bar',C_bar',[0.1,0.3,0.2])';
+            
+            L = -place(A_bar',C_bar',[0.1,0.2,0.3])';
+            
+            disp("Closed Loop poles of the unconstrained infinite horizon system without observer")
+            Q = diag([1, 100]);
+            R = 1;
+            [Klqr, ~, ~] = dlqr(mpc.A, mpc.B, Q, R);
+            Acl = mpc.A - mpc.B * Klqr;
+            disp(eig(Acl));
             
             % YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

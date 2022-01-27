@@ -19,8 +19,8 @@ ref_sym = opti.parameter(4, 1);   % target position
 % YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE
 
 % Decision varaibles for steady state (symbolic)
-X_ref = opti.variable(nx, 1); % state trajectory
-U_ref = opti.variable(nu, 1);   % control trajectory)
+X_ref = opti.variable(nx, 1);   % state trajectory
+U_ref = opti.variable(nu, 1);   % control trajectory
 
 f_discrete = @(x,u) RK4(x, u, rocket);
 
@@ -62,7 +62,7 @@ opti.subject_to(X_ref([10 11 12 6]) == ref_sym);
 obj = obj + (U_ref)'*Rs*(U_ref);
 
 %Cost matrices for tracking
-Q = diag([100, 100, 100, 1, 100, 200, 1, 1, 1, 200, 200, 200]);
+Q = diag([100, 100, 1, 1, 1, 1000, 1, 1, 1, 1000, 1000, 1000]);
 R = diag([1, 1, 1, 1]);
 
 %Constraints and Objective for tracking

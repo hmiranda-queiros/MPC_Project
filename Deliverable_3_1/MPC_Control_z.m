@@ -1,5 +1,9 @@
 classdef MPC_Control_z < MPC_Control
     properties
+        flag = 0
+    end
+    
+    properties
         A_bar, B_bar, C_bar % Augmented system for disturbance rejection
         L                   % Estimator gain for disturbance rejection
     end
@@ -76,6 +80,14 @@ classdef MPC_Control_z < MPC_Control
                 end
             end
             [Ff,ff] = double(Xf);
+            
+            if mpc.flag == 0 
+                % Plot Xf
+                figure;
+                Xf.plot();
+                title("z controller : Xf for dimension 1, 2")
+                mpc.flag = 1;
+            end
             
             %Objective and constraints YALMIP
             obj = 0;

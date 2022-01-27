@@ -44,7 +44,7 @@ classdef MPC_Control_y < MPC_Control
             % u in U = { u | Mu <= m }
             M = [1;-1]; m = [0.26; 0.26] - M*us(1);
             % x in X = { x | Fx <= f }
-            F = [0 1 0 0; 0 -1 0 0]; f = [0.0873; 0.0873] - F*xs([1 0 0 1 0 0 0 1 0 0 1 0] == 1);
+            F = [0 1 0 0; 0 -1 0 0]; f = [0.0873; 0.0873] - F*xs([1 4 8 11]);
 
             % Compute LQR controller for unconstrained system
             [~,Qf,~] = dlqr(mpc.A,mpc.B,Q,R);
@@ -103,7 +103,7 @@ classdef MPC_Control_y < MPC_Control
             [xs_l, us_l] = rocket.trim();
             
             us_l = us_l(1);
-            xs_l = xs_l([1 0 0 1 0 0 0 1 0 0 1 0] == 1);
+            xs_l = xs_l([1 4 8 11]);
             
             % Constraints
             % u in U = { u | Mu <= m }

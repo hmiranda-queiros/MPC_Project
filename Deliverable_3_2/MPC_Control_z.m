@@ -119,7 +119,7 @@ classdef MPC_Control_z < MPC_Control
             rocket = Rocket(Ts);
             [xs_l, us_l] = rocket.trim();
             
-            xs_l = xs_l([0 0 0 0 0 0 0 0 1 0 0 1] == 1);
+            xs_l = xs_l([9 12]);
             us_l = us_l(3);
             
             % Constraints
